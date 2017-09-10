@@ -4,7 +4,7 @@ public class UDPServer{
     public static void main(String args[]){
         DatagramSocket aSocket = null;
         try{
-            aSocket = new DatagramSocket(6789);
+            aSocket = new DatagramSocket(7007);
             // create socket at agreed port
             byte[] buffer = new byte[1000];
             while(true){
