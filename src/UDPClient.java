@@ -1,11 +1,13 @@
 import java.net.*;
 import java.io.*;
+import java.nio.charset.Charset;
+
 public class UDPClient{
     public static void main(String args[]){
         // args give message contents and destination hostname
         DatagramSocket aSocket = null;
         try {
-            aSocket = new DatagramSocket();
+            aSocket = new QuestionableDatagramSocket();
             byte [] m = args[0].getBytes();
             InetAddress aHost = InetAddress.getByName(args[1]);
             int serverPort = 7007;

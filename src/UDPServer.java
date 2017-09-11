@@ -2,9 +2,9 @@ import java.net.*;
 import java.io.*;
 public class UDPServer{
     public static void main(String args[]){
-        DatagramSocket aSocket = null;
+        QuestionableDatagramSocket aSocket = null;
         try{
-            aSocket = new DatagramSocket(7007);
+            aSocket = new QuestionableDatagramSocket(7007);
             // create socket at agreed port
             byte[] buffer = new byte[1000];
             while(true){
