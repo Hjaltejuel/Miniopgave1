@@ -29,7 +29,6 @@ public class QuestionableDatagramSocket extends DatagramSocket {
             } else if (choosen == 2){
                 altered = reorder(new String(a.getData()));
             }
-            System.out.println(altered + " " + 1);
             a.setData(altered.getBytes());
 
         }
@@ -43,49 +42,56 @@ public class QuestionableDatagramSocket extends DatagramSocket {
 
     public String discard(String discard){
         System.out.println("i discard");
-        String[] discardarray = discard.split(" ");
-        String[] choosen = new String[discardarray.length];
-        int index = 0;
-        for(int i = 0; i <discardarray.length; i++){
-            if(i%2 == 1){
-                choosen[index] = discardarray[i];
-                index++;
-            }
-
+        String[] discardarray = discard.split("\\s+");
+        StringBuilder builder = new StringBuilder();
+        for(String s: discardarray)
+        {
+            System.out.println("Element: " + s);
         }
-        System.out.println(Arrays.toString(choosen));
-        return Arrays.toString(choosen);
+        for(int i = 0; i <discardarray.length; i++){
+            if(i%2 == 0){
+                builder.append(discardarray[i]+ " ");
+            }
+        }
+        System.out.println("Builder returned: " +builder.toString());
+        return builder.toString();
     }
+
     public String duplicate(String duplicate){
         System.out.println("i duplicate");
-        String[] duplicatearray = duplicate.split(" ");
-        String[] choosen = new String[duplicatearray.length*2];
-        int index = 0;
+        String[] duplicatearray = duplicate.split("\\s+");
+        StringBuilder builder = new StringBuilder();
+        for(String s: duplicatearray)
+        {
+            System.out.println("Element: " + s);
+        }
+
         for(int i = 0; i<duplicatearray.length;i++) {
             if(i%2 == 0){
-                choosen[index] = duplicatearray[i];
-                choosen[index++] = duplicatearray[i];
-                index++;
+                builder.append(duplicatearray[i] + " ");
+                builder.append(duplicatearray[i] + " ");
             } else {
-                choosen[index] = duplicatearray[i];
+                builder.append(duplicatearray[i] + " ");
             }
         }
-        System.out.println(Arrays.toString(choosen) + "med");
-        return Arrays.toString(choosen);
+        System.out.println("Builder returned: "+builder.toString());
+        return builder.toString();
     }
+
     public String reorder(String reorder){
         System.out.println("i reorder");
-        String[] reorderarray = reorder.split(" ");
-        String[] choosen = new String[reorderarray.length];
-        if(reorderarray.length >1) {
-            for (int i = 0; i < reorderarray.length; i++) {
-                if (i % 2 == 0) {
-                    choosen[i] = reorderarray[i+1];
-                    choosen[i+1] = reorderarray[i];
-                }
-            }
-            System.out.println(Arrays.toString(choosen)+ "hej");
-            return Arrays.toString(choosen);
-        } else return Arrays.toString(reorderarray);
+        String[] split = reorder.split("\\s+");
+        for(String s: split)
+        {
+            System.out.println("Element: " + s);
+        }
+        StringBuilder builder = new StringBuilder();
+        for(int i = split.length; i>0;i--){
+            builder.append(split[i - 1] + " ");
+
+        }
+        System.out.println("Builder returned: "+builder.toString());
+        return builder.toString();
     }
+
 }
