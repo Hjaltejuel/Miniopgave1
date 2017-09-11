@@ -6,8 +6,9 @@ public class UDPServer{
         try{
             aSocket = new QuestionableDatagramSocket(7007);
             // create socket at agreed port
-            byte[] buffer = new byte[1000];
+
             while(true){
+                byte[] buffer = new byte[1000];
                 DatagramPacket request = new DatagramPacket(buffer, buffer.length);
                 aSocket.receive(request);
                 DatagramPacket reply = new DatagramPacket(request.getData(), request.getLength(),
