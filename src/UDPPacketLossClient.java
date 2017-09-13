@@ -13,11 +13,12 @@ public class UDPPacketLossClient {
          int packetSize = Integer.parseInt(args[0]);
          int numberOfPackets = Integer.parseInt(args[1]);
          int Frequency = Integer.parseInt(args[2]);
-         int x = 0;
+
 
          Thread t = new Thread(new Runnable() {
              @Override
              public void run() {
+                 int x = 0;
                  DatagramSocket sendSocket = null;
                  try {
                      sendSocket = new DatagramSocket();
@@ -27,6 +28,7 @@ public class UDPPacketLossClient {
                      int serverPort = 7007;
                      for(int i = 0; i< numberOfPackets; i++){
                          String s ="[" + x + "]";
+                         x++;
                          byte[] sm = s.getBytes();
                          for(int j = 0; j < sm.length; j++){
                              m[j] = sm[j];
@@ -60,7 +62,7 @@ public class UDPPacketLossClient {
                          DatagramPacket reply = new DatagramPacket(buffer, buffer.length);
                          receiveSocket.receive(reply);
                          i++;
-                         System.out.println(i);
+                         System.out.println(new String (reply.getData()).trim() );
                      }
                  } catch (SocketException e) {
                      e.printStackTrace();
