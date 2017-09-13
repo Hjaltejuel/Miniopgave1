@@ -25,7 +25,7 @@ public class UDPPacketLossClient {
                  try {
                      sendSocket = new DatagramSocket();
                      byte[] m = new byte[packetSize];
-                     InetAddress aHost = InetAddress.getLocalHost();
+                     InetAddress aHost = InetAddress.getByName("10.26.8.235");
                      int serverPort = 7007;
                      for(int i = 0; i< numberOfPackets; i++){
                          DatagramPacket request = new DatagramPacket(m, args[0].length(), aHost, serverPort);
@@ -51,11 +51,13 @@ public class UDPPacketLossClient {
 
                  try {
                      DatagramSocket receiveSocket = new DatagramSocket(7009);
+                     int i = 0;
                      while(true) {
                          byte[] buffer = new byte[packetSize];
                          DatagramPacket reply = new DatagramPacket(buffer, buffer.length);
                          receiveSocket.receive(reply);
-                         System.out.println("we have recieved");
+                         i++;
+                         System.out.println(i);
                      }
                  } catch (SocketException e) {
                      e.printStackTrace();
