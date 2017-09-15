@@ -24,7 +24,7 @@ public class UDPPacketLossClient {
                      sendSocket = new DatagramSocket();
 
 
-                     InetAddress aHost = InetAddress.getByName("10.26.15.40");
+                     InetAddress aHost = InetAddress.getByName("localhost");
                      int serverPort = 7007;
                      byte[] m = new byte[packetSize];
                      for(int i = 0; i< numberOfPackets; i++){
