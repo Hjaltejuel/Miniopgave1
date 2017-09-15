@@ -13,10 +13,12 @@ public class RFC862{
             // create socket at agreed port
             byte[] buffer = new byte[1000];
             while(true){
+                //Create a packet for the recieve
                 DatagramPacket request = new DatagramPacket(buffer, buffer.length);
                 aSocket.receive(request);
                 DatagramPacket reply = new DatagramPacket(request.getData(), request.getLength(),
                         request.getAddress(), request.getPort());
+                //Send the packet back
                 System.out.println("UDP packet from: " + new String(request.getAddress().toString()));
                 aSocket.send(reply);
             }

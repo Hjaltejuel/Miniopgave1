@@ -10,8 +10,9 @@ import java.net.SocketException;
  */
 public class UDPPacketLossServer {
     public static void main(String args[]){
-            // create socket at agreed port
+        //Create a queue for the packages
         Queue<DatagramPacket> pq = new Queue<DatagramPacket>();
+        //Make a new thread for recieving
             Thread recieveThread = new Thread(new Runnable() {
                 @Override
             public void run() {
@@ -20,6 +21,7 @@ public class UDPPacketLossServer {
                         aSocket = new DatagramSocket(7007);
 
                         while(true){
+                            //Recieve, make reply, add it to queue.
                             byte[] buffer = new byte[10000];
                             DatagramPacket request = new DatagramPacket(buffer, buffer.length);
                             aSocket.receive(request);
@@ -37,12 +39,14 @@ public class UDPPacketLossServer {
                 }
 
             });
+        //Create thread for sending
         Thread replyThread = new Thread(new Runnable() {
             @Override
             public void run() {
                 DatagramSocket replySocket = null;
                 try {
                     replySocket = new DatagramSocket();
+                    //Keep taking from the priority queue, and sending the packet
                     while (true) {
                         if(!pq.isEmpty()) {
                             DatagramPacket dp = pq.dequeue();
@@ -58,6 +62,7 @@ public class UDPPacketLossServer {
                 }
             }
             });
+        //Start the two threads
         recieveThread.start();
         replyThread.start();
         }

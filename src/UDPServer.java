@@ -6,8 +6,8 @@ public class UDPServer{
         try{
             aSocket = new DatagramSocket(7007);
             // create socket at agreed port
-
             while(true){
+                //Simple echo server
                 byte[] buffer = new byte[1000];
                 DatagramPacket request = new DatagramPacket(buffer, buffer.length);
                 aSocket.receive(request);
