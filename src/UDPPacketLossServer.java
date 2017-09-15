@@ -18,8 +18,9 @@ public class UDPPacketLossServer {
                     DatagramSocket aSocket = null;
                     try {
                         aSocket = new DatagramSocket(7007);
+
                         while(true){
-                            byte[] buffer = new byte[100000];
+                            byte[] buffer = new byte[10000];
                             DatagramPacket request = new DatagramPacket(buffer, buffer.length);
                             aSocket.receive(request);
                             DatagramPacket reply = new DatagramPacket(request.getData(), request.getLength(),

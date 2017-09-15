@@ -22,12 +22,12 @@ public class UDPPacketLossClient {
                  DatagramSocket sendSocket = null;
                  try {
                      sendSocket = new DatagramSocket();
-                     byte[] m = new byte[packetSize];
 
-                     InetAddress aHost = InetAddress.getByName("localhost");
+
+                     InetAddress aHost = InetAddress.getByName("10.26.15.40");
                      int serverPort = 7007;
+                     byte[] m = new byte[packetSize];
                      for(int i = 0; i< numberOfPackets; i++){
-
                          String s = ""+i;
                          byte[] sm = s.getBytes();
                          for(int j = 0; j < sm.length; j++){
@@ -57,15 +57,15 @@ public class UDPPacketLossClient {
                  int k = 0;
                  try {
                      DatagramSocket receiveSocket = new DatagramSocket(7009);
-                     receiveSocket.setSoTimeout(10000);
+                     receiveSocket.setSoTimeout(2000);
                      HashSet<Integer> duplicatorCheck = new HashSet<Integer>();
                      while(true) {
                          byte[] buffer = new byte[packetSize];
                          DatagramPacket reply = new DatagramPacket(buffer, buffer.length);
                          receiveSocket.receive(reply);
                          k++;
-                         System.out.println(k);
                          int check = Integer.parseInt(new String(reply.getData()).trim());
+                         System.out.println(check);
                          if(duplicatorCheck.contains(check)){i++;}
                          duplicatorCheck.add(check);
                      }
