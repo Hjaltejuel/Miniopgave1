@@ -41,7 +41,7 @@ public class UDPPacketLossServer {
             public void run() {
                 DatagramSocket replySocket = null;
                 try {
-                    replySocket = new DatagramSocket(7009);
+                    replySocket = new DatagramSocket();
                     while (true) {
                         if(!pq.isEmpty()) {
                             DatagramPacket dp = pq.dequeue();

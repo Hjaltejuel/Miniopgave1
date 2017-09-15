@@ -1,6 +1,7 @@
 import java.io.IOException;
 import java.net.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 /**
  * Created by Michelle on 9/13/2017.
@@ -18,25 +19,24 @@ public class UDPPacketLossClient {
          Thread t = new Thread(new Runnable() {
              @Override
              public void run() {
-                 int x = 0;
                  DatagramSocket sendSocket = null;
                  try {
                      sendSocket = new DatagramSocket();
                      byte[] m = new byte[packetSize];
 
-                     InetAddress aHost = InetAddress.getByName("10.26.8.235");
+                     InetAddress aHost = InetAddress.getByName("localhost");
                      int serverPort = 7007;
                      for(int i = 0; i< numberOfPackets; i++){
-                         String s ="[" + x + "]";
-                         x++;
+
+                         String s = ""+i;
                          byte[] sm = s.getBytes();
                          for(int j = 0; j < sm.length; j++){
                              m[j] = sm[j];
                          }
-                         DatagramPacket request = new DatagramPacket(m, args[0].length(), aHost, serverPort);
+
+                         DatagramPacket request = new DatagramPacket(m, packetSize, aHost, serverPort);
                          sendSocket.send(request);
                          Thread.sleep(Frequency);
-
                      }
                  } catch (SocketException e) {
                      e.printStackTrace();
@@ -53,19 +53,29 @@ public class UDPPacketLossClient {
          Thread q = new Thread(new Runnable() {
              @Override
              public void run() {
-
+                 int i = 0;
+                 int k = 0;
                  try {
                      DatagramSocket receiveSocket = new DatagramSocket(7009);
-                     int i = 0;
+                     receiveSocket.setSoTimeout(10000);
+                     HashSet<Integer> duplicatorCheck = new HashSet<Integer>();
                      while(true) {
                          byte[] buffer = new byte[packetSize];
                          DatagramPacket reply = new DatagramPacket(buffer, buffer.length);
                          receiveSocket.receive(reply);
-                         i++;
-                         System.out.println(new String (reply.getData()).trim() );
+                         k++;
+                         System.out.println(k);
+                         int check = Integer.parseInt(new String(reply.getData()).trim());
+                         if(duplicatorCheck.contains(check)){i++;}
+                         duplicatorCheck.add(check);
                      }
-                 } catch (SocketException e) {
-                     e.printStackTrace();
+                 } catch (SocketTimeoutException e) {
+                     System.out.println("number of duplicates : " +i);
+                     System.out.println("procent number of duplicates : " + ((double)i/(double)numberOfPackets)*100);
+                     int lost = (numberOfPackets - (k-i));
+                     System.out.println("number of lost packages : " + lost);
+                     System.out.println("procent of number of lost packages : " + (((double)lost/(double)numberOfPackets)*100));
+
                  } catch (IOException e) {
                      e.printStackTrace();
                  }
