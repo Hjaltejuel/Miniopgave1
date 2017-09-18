@@ -15,7 +15,6 @@ public class UDPClient{
             for(int i = 0; i<args.length-1;i++){
                 byte[] m = args[i].getBytes();
                 DatagramPacket request = new DatagramPacket(m, args[i].length(), aHost, serverPort);
-                System.out.println(new String(m));
                 aSocket.send(request);
             }
         } catch (SocketException e) {

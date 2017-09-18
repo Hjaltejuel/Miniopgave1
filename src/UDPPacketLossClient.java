@@ -10,7 +10,6 @@ public class UDPPacketLossClient {
      public static void main(String args[]) {
          // args give packetsize, numberofpackets and frequency
 
-         ArrayList<Byte> barray = new ArrayList<Byte>();
          int packetSize = Integer.parseInt(args[0]);
          int numberOfPackets = Integer.parseInt(args[1]);
          int Frequency = Integer.parseInt(args[2]);
