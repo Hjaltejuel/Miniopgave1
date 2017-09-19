@@ -50,7 +50,6 @@ public class UDPPacketLossServer {
                     while (true) {
                         if(!pq.isEmpty()) {
                             DatagramPacket dp = pq.dequeue();
-                            System.out.println("UDP packet from: " + new String(dp.getAddress().toString()));
                             replySocket.send(dp);
                         }
                     }
