@@ -8,13 +8,12 @@ import java.util.HashSet;
  */
 public class UDPPacketLossClient {
      public static void main(String args[]) {
-         // args give packetsize, numberofpackets and frequency
          int packetSize = Integer.parseInt(args[0]);
          int numberOfPackets = Integer.parseInt(args[1]);
          int Frequency = Integer.parseInt(args[2]);
 
-        //Make a new thread for sending packages
-         Thread t = new Thread(new Runnable() {
+         //Make a new thread for sending packages
+         Thread sendThread = new Thread(new Runnable() {
              @Override
              public void run() {
                  DatagramSocket sendSocket = null;
@@ -48,11 +47,11 @@ public class UDPPacketLossClient {
              }
          });
          //Create a recieving thread
-         Thread q = new Thread(new Runnable() {
+         Thread recieveThread = new Thread(new Runnable() {
              @Override
              public void run() {
-                 int i = 0;
-                 int k = 0;
+                 int duplicateCounter = 0;
+                 int packetCounter = 0;
                  try {
                      //Make a new socket and set the port to 7009, set timeout so we can stop recieving
                      DatagramSocket receiveSocket = new DatagramSocket(7009);
@@ -65,17 +64,17 @@ public class UDPPacketLossClient {
                          DatagramPacket reply = new DatagramPacket(buffer, buffer.length);
                          receiveSocket.receive(reply);
                          //K measures number of recieved packages, used to measure package loss
-                         k++;
+                         packetCounter++;
                          int check = Integer.parseInt(new String(reply.getData()).trim());
                          //check to see if there are any duplicates
-                         if(duplicatorCheck.contains(check)){i++;}
+                         if(duplicatorCheck.contains(check)){duplicateCounter++;}
                          duplicatorCheck.add(check);
                      }
                  } catch (SocketTimeoutException e) {
                      //When we stop recieving
-                     System.out.println("number of duplicates : " +i);
-                     System.out.println("procent number of duplicates : " + ((double)i/(double)numberOfPackets)*100);
-                     int lost = (numberOfPackets - (k-i));
+                     System.out.println("number of duplicates : " +duplicateCounter);
+                     System.out.println("procent number of duplicates : " + ((double)duplicateCounter/(double)numberOfPackets)*100);
+                     int lost = (numberOfPackets - (packetCounter-duplicateCounter));
                      System.out.println("number of lost packages : " + lost);
                      System.out.println("procent of number of lost packages : " + (((double)lost/(double)numberOfPackets)*100));
 
@@ -85,8 +84,8 @@ public class UDPPacketLossClient {
              }
          });
          //Start the two threads
-         t.start();
-         q.start();
+         sendThread.start();
+         recieveThread.start();
 
     }
 
