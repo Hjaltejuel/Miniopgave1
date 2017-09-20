@@ -21,9 +21,8 @@ public class UDPPacketLossServer {
                         byte[] buffer = new byte[10000];
                         DatagramPacket request = new DatagramPacket(buffer, buffer.length);
                         receiveSocket.receive(request);
-                        DatagramPacket reply = new DatagramPacket(request.getData(), request.getLength(),
-                                request.getAddress(), 7009);
-                        packetQueue.enqueue(reply);
+                        request.setPort(7009);
+                        packetQueue.enqueue(request);
 
                     }
                 }
