@@ -10,7 +10,7 @@ import java.util.Random;
  */
 public class QuestionableDatagramSocket extends DatagramSocket {
     //Saves the datagram to be reversed
-    DatagramPacket saved = null;
+    DatagramPacket firstSavedMessage = null;
 
     public QuestionableDatagramSocket() throws SocketException {
         super();
@@ -19,12 +19,12 @@ public class QuestionableDatagramSocket extends DatagramSocket {
     @Override
     public void send(DatagramPacket a) {
         //If we are on a second datagram in a reverse series
-        if (saved!=null) {
+        if (firstSavedMessage!=null) {
             try {
                 //send the datagrams in reverse order
                 super.send(a);
-                super.send(saved);
-                saved = null;
+                super.send(firstSavedMessage);
+                firstSavedMessage = null;
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -36,7 +36,6 @@ public class QuestionableDatagramSocket extends DatagramSocket {
                 int choosen = random.nextInt(3);
                 //33% chance to do either a discard, reorder or a duplicate
                 if (choosen == 0) {
-                    //do nothing
                 } else if (choosen == 1) {
                     try {
                         //Send twice
@@ -49,11 +48,10 @@ public class QuestionableDatagramSocket extends DatagramSocket {
                     //If less than 2 datagrams are send and we are supposed to reverse, reverse will work as a discard
                 } else if (choosen == 2) {
                     //look for reverse
-                    saved = a;
+                    firstSavedMessage = a;
                 }
 
             } else try {
-                //If none of the above actions are triggered send as normal
                 super.send(a);
             } catch (IOException e) {
                 e.printStackTrace();
